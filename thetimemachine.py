@@ -46,9 +46,13 @@ def main():
         if urls:
             console.print(f"[bold green]URLs successfully written to {output_path}[/bold green]")
     else:
-        # Load existing URLs from file
-        with open(urls_file) as f:
-            urls = [line.strip() for line in f]
+        if os.path.exists(urls_file):
+            with open(urls_file) as f:
+                urls = [line.strip() for line in f]
+            print(f"[+] Loaded {len(urls)} URLs from {urls_file}")
+        else:
+            print(f"[!] URLs file not found: {urls_file}. Please run with --fetch first.")
+            return
 
     if args.subdomains:
         subdomains_list = subdomains.extract_subdomains_from_urls(urls)
